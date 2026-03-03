@@ -15,6 +15,10 @@
         'nssver.c',
         'utilwrap.c'
       ],
+       'defines': [
+        'POLICY_FILE="nss.config"',
+        'POLICY_PATH="/etc/crypto-policies/back-ends"',
+      ],
       'dependencies': [
         '<(DEPTH)/exports.gyp:nss_exports',
       ]

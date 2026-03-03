@@ -1003,6 +1003,7 @@ DeleteCertAndKey(char *nickname, secuPWData *pwdata)
     PK11SlotInfo *slot;
 
     slot = PK11_GetInternalKeySlot();
+    
     if (PK11_NeedLogin(slot)) {
         rv = PK11_Authenticate(slot, PR_TRUE, pwdata);
         if (rv != SECSuccess) {
@@ -3175,6 +3176,8 @@ certutil_main(int argc, char **argv, PRBool initialize)
     if (certutil.commands[cmd_Version].activated) {
         printf("Certificate database content version: command not implemented.\n");
     }
+
+    //here
 
     if (PL_strcmp(slotname, "internal") == 0)
         slot = PK11_GetInternalKeySlot();

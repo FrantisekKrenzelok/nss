@@ -714,7 +714,7 @@ nss_Init(const char *configdir, const char *certPrefix, const char *keyPrefix,
                     "parameters=\"configdir='sql:" POLICY_PATH "' "
                     "secmod='" POLICY_FILE "' "
                     "flags=readOnly,noCertDB,forceSecmodChoice,forceOpen\" "
-                    "NSS=\"flags=internal,moduleDB,skipFirst,moduleDBOnly,critical\"",
+                    "NSS=\"flags=internal,moduleDB,moduleDBOnly,critical\"",
                     parent, PR_TRUE);
                 if (module) {
                     PRBool isLoaded = module->loaded;

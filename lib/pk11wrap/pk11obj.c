@@ -614,9 +614,12 @@ PK11_CopyKey(PK11SlotInfo *slot, CK_OBJECT_HANDLE srcObject)
 {
     CK_OBJECT_HANDLE destObject;
     CK_RV crv;
+    CK_ATTRIBUTE rust_handle;
+    CK_ATTRIBUTE_PTR ptr = &rust_handle;
+
 
     PK11_EnterSlotMonitor(slot);
-    crv = PK11_GETTAB(slot)->C_CopyObject(slot->session, srcObject, NULL, 0,
+    crv = PK11_GETTAB(slot)->C_CopyObject(slot->session, srcObject, ptr, 0,
                                           &destObject);
     PK11_ExitSlotMonitor(slot);
     if (crv == CKR_OK)

@@ -2183,6 +2183,24 @@ PK11_GetInternalKeySlot(void)
     return PK11_ReferenceSlot(mod->isFIPS ? mod->slots[0] : mod->slots[1]);
 }
 
+PK11SlotInfo *
+PK11_GetBestKeySlot(void)
+{
+    SECMODModule *mod;
+
+    if (pk11InternalKeySlot) {
+        return PK11_ReferenceSlot(pk11InternalKeySlot);
+    }
+
+    mod = SECMOD_GetInternalModule();
+    PORT_Assert(mod != NULL);
+    if (!mod) {
+        PORT_SetError(SEC_ERROR_NO_MODULE);
+        return NULL;
+    }
+    return PK11_ReferenceSlot(mod->isFIPS ? mod->slots[0] : mod->slots[1]);
+}
+
 /* get the internal default slot */
 PK11SlotInfo *
 PK11_GetInternalSlot(void)

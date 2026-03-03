@@ -145,6 +145,12 @@ SECMOD_AddModuleToList(SECMODModule *newModule)
     if (newModule->internal && !internalModule) {
         internalModule = SECMOD_ReferenceModule(newModule);
     }
+
+    if (SECMOD_GetSystemFIPSEnabled() &&
+        !strncmp(newModule->commonName, "kryoptic", sizeof("kryoptic"))) {
+        internalModule = SECMOD_ReferenceModule(newModule);
+    }
+
     return secmod_AddModuleToList(&modules, newModule);
 }
 

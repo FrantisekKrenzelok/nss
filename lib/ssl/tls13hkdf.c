@@ -39,6 +39,8 @@ tls13_HkdfExtract(PK11SymKey *ikm1, PK11SymKey *ikm2, SSLHashType baseHash,
     PK11SymKey *prk;
     static const PRUint8 zeroKeyBuf[HASH_LENGTH_MAX];
     SECItem zeroKeyItem = { siBuffer, CONST_CAST(PRUint8, zeroKeyBuf), kTlsHkdfInfo[baseHash].hashSize };
+    static const PRUint8 zeroSeedBuf[HASH_LENGTH_MAX];
+    SECItem zeroSeedItem = { siBuffer, CONST_CAST(PRUint8, zeroSeedBuf), kTlsHkdfInfo[baseHash].hashSize };
     PK11SlotInfo *slot = NULL;
     PK11SymKey *newIkm2 = NULL;
     PK11SymKey *newIkm1 = NULL;
@@ -49,14 +51,14 @@ tls13_HkdfExtract(PK11SymKey *ikm1, PK11SymKey *ikm2, SSLHashType baseHash,
     params.prfHashMechanism = kTlsHkdfInfo[baseHash].pkcs11Mech;
     params.pInfo = NULL;
     params.ulInfoLen = 0UL;
-    params.pSalt = NULL;
-    params.ulSaltLen = 0UL;
+    params.pSalt = zeroSeedItem.data;
+    params.ulSaltLen = zeroSeedItem.len;
     params.hSaltKey = CK_INVALID_HANDLE;
 
     if (!ikm1) {
         /* PKCS #11 v3.0 has and explict NULL value, which equates to
          * a sequence of zeros equal in length to the HMAC. */
-        params.ulSaltType = CKF_HKDF_SALT_NULL;
+        params.ulSaltType = CKF_HKDF_SALT_DATA;
     } else {
         /* PKCS #11 v3.0 can take the salt as a key handle */
         params.hSaltKey = PK11_GetSymKeyHandle(ikm1);

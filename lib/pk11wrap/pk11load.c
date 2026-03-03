@@ -633,6 +633,8 @@ secmod_InitializeModuleAndGetSlotInfo(SECMODModule *mod, SECMODModule **oldModul
              * is set */
             if (secmod_IsInternalKeySlot(mod) && (i == (mod->isFIPS ? 0 : 1))) {
                 pk11_SetInternalKeySlotIfFirst(mod->slots[i]);
+                if ( !strncmp(mod->commonName, "kryoptic", sizeof("kryoptic")))
+                        pk11_SetInternalKeySlot(mod->slots[i]);
             }
         }
         mod->slotCount = slotCount;
